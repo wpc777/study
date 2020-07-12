@@ -192,7 +192,15 @@ Create New Registory并选择当前项目的文件夹，将当前目录构建为
 
 如果想要合并的分支所指向的提交是所在的提交的直接后继，Git以一种名为“快进式合并”的方式进行合并，会直接推进式地移动分支指针，因为没有需要解决的分歧。如果开发历史从一个更早的地方分叉开来，合并分支不是当前所在分支的直接后继，但它们有一个公共祖先，Git会取两个分支的末端所指快照与该公共祖先进行三方合并，与前面推进式移动指针不同，三方合并将生成一个新快照并且自动创建一个新的提交指向它。
 
-合并两个不同分支时，可能会遇到各自分支的同级目录下有相同命名相同格式的文件，产生这种冲突时Git做了聪明的处理。Git会在有冲突的文件中加入标准的冲突解决标记，这样你可以打开这些包含冲突的文件然后手动解决冲突：
+创建两个分支，分别是branch1和branch2：branch1在master分支基础上添加了branch.txt文件，txt内容为branch1；branch2在master分支基础上添加了branch.txt文件，txt内容为branch2。在branch1分支合并branch2分支。
+
+![use12](imgs/git-use12.jpg)
+
+合并两个不同分支时，可能会遇到各自分支的同级目录下有相同命名相同格式的文件，发生冲突。
+
+![use13](imgs/git-use13.jpg)
+
+产生这种冲突时Git做了聪明的处理。Git会在有冲突的文件中加入标准的冲突解决标记，这样你可以打开这些包含冲突的文件然后手动解决冲突：
 
 <pre><<<<<<< HEAD</pre> 
 此处将显示当前分支的冲突内容
@@ -202,18 +210,23 @@ Create New Registory并选择当前项目的文件夹，将当前目录构建为
 
 此时Git做了合并，但是没有自动地创建一个新的合并提交。Git会暂停下来，等待你去解决合并产生的冲突。 你可以在合并冲突后的任意时刻使用git status命令来查看那些因包含合并冲突而处于未合并（unmerged）状态的文件。
 
-
-创建两个分支，分别是branch1和branch2：branch1在master分支基础上添加了branch.txt文件，txt内容为branch1；branch2在master分支基础上添加了branch.txt文件，txt内容为branch2。在branch1分支合并branch2分支。
-
-![use11](imgs/git-use11.jpg)
+![use14](imgs/git-use14.jpg)
 
 可以使用相关的Git的图形化合并工具如kdiff3、emerge、p4merge，默认为opendiff。如果不使用Git的图形化合并工具，那么直接修改包含冲突的文件从冲突内容中择一保留，将标准冲突解决标记和不要的冲突部分删掉即可，解决完冲突之后重新将文件用git add命令暂存才能git commit完成合并提交。
 
+![use15](imgs/git-use15.jpg)
+
 #### 删除分支
 
-当我们在分支开发完成并将内容合并到master分支上，该分支可能不再被需要了，可以使用
+工作中当我们在分支开发完成并将内容合并到master分支上，该分支可能不再被需要了，可以使用
 <code>git branch -d [branchname]</code>
 命令将该不要的分支删除。
+
+这里的branch1分支已经合并了branch2分支，将branch2分支删掉。
+
+![use16](imgs/git-use16.jpg)
+
+![use17](imgs/git-use17.jpg)
 
 #### 为特殊提交加标签
 
