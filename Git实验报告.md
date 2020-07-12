@@ -150,15 +150,30 @@ Create New Registory并选择当前项目的文件夹，将当前目录构建为
 
 使用分支意味着我们能在不影响开发主线在分支上进行我们的开发工作，使开发主线处于一个稳定版本。由于Git的分支实质上仅是包含所指对象校验和（长度为40的SHA-1值字符串）的文件，所以它的创建和销毁都异常高效。创建一个新分支就相当于往一个文件中写入41个字节（40个字符和1个换行符）。
 
-使用
-<code>git branch [branchname]</code>
-命令创建新分支，虽然已经创建了新分支，但我们仍处于原先的分支上，仍需进行下一步切换才能在新分支上开展我们的工作。
+当前Git提交历史：
 
-每次切换分支前需要将当前分支修改的内容全部提交，否则报错。使用
+![use5](imgs/git-use5.jpg)
+
+在Bash使用<code>git branch [branchname]</code>
+命令或在GUI创建新分支。
+
+![use6](imgs/git-use6.jpg)
+
+虽然已经创建了新分支，但我们仍处于原先的分支上，仍需进行下一步切换才能在新分支上开展我们的工作。每次切换分支前需要将当前分支修改的内容全部提交，否则报错。使用
 <code>git checkout [branchname]</code>
 切换到对应新分支，当有需要的时候使用该命令再切换为master分支。
 
-我们在新分支testBranch添加了新文件testbranch.txt并提交，再切换到其他分支时项目目录下的testbranch.txt便"消失"了，当我们切换回testBranch分支它又"神奇"出现了，这也正是分支的特性。
+可以看到已成功切换，当前处在branch1分支。
+
+![use7](imgs/git-use7.jpg)
+
+我们在新分支branch1添加了新文件branch.txt并提交，再切换到其他分支时项目目录下的branch.txt便"消失"了，当我们切换回branch1分支它又"神奇"出现了，这也正是分支的特性。
+
+![use8](imgs/git-use8.jpg)
+
+![use9](imgs/git-use9.jpg)
+
+![use10](imgs/git-use10.jpg)
 
 有一种更快捷的创建并切换到新分支方法，使用参数-b执行
 <code>git checkout -b [branchname]</code>命令，将创建新分支并立即切换到该分支上，相当于上述分支创建命令和切换命令的融合。
@@ -167,7 +182,7 @@ Create New Registory并选择当前项目的文件夹，将当前目录构建为
 
 <code>git branch -m [oldname] [newname]</code>
 
-#### 合并分支
+#### 合并分支与合并冲突
 
 一旦某分支有了可以合并到当前分支的独立内容，可以使用
 <code>git merge [branchname]</code>
@@ -178,6 +193,7 @@ Create New Registory并选择当前项目的文件夹，将当前目录构建为
 如果想要合并的分支所指向的提交是所在的提交的直接后继，Git以一种名为“快进式合并”的方式进行合并，会直接推进式地移动分支指针，因为没有需要解决的分歧。如果开发历史从一个更早的地方分叉开来，合并分支不是当前所在分支的直接后继，但它们有一个公共祖先，Git会取两个分支的末端所指快照与该公共祖先进行三方合并，与前面推进式移动指针不同，三方合并将生成一个新快照并且自动创建一个新的提交指向它。
 
 合并两个不同分支时，可能会遇到各自分支的同级目录下有相同命名相同格式的文件，产生这种冲突时Git做了聪明的处理。Git会在有冲突的文件中加入标准的冲突解决标记，这样你可以打开这些包含冲突的文件然后手动解决冲突：
+
 <pre><<<<<<< HEAD</pre> 
 此处将显示当前分支的冲突内容
 <pre>=======</pre>
@@ -185,6 +201,11 @@ Create New Registory并选择当前项目的文件夹，将当前目录构建为
 <pre>>>>>>>> [mergebranchname]</pre>
 
 此时Git做了合并，但是没有自动地创建一个新的合并提交。Git会暂停下来，等待你去解决合并产生的冲突。 你可以在合并冲突后的任意时刻使用git status命令来查看那些因包含合并冲突而处于未合并（unmerged）状态的文件。
+
+
+创建两个分支，分别是branch1和branch2：branch1在master分支基础上添加了branch.txt文件，txt内容为branch1；branch2在master分支基础上添加了branch.txt文件，txt内容为branch2。在branch1分支合并branch2分支。
+
+![use11](imgs/git-use11.jpg)
 
 可以使用相关的Git的图形化合并工具如kdiff3、emerge、p4merge，默认为opendiff。如果不使用Git的图形化合并工具，那么直接修改包含冲突的文件从冲突内容中择一保留，将标准冲突解决标记和不要的冲突部分删掉即可，解决完冲突之后重新将文件用git add命令暂存才能git commit完成合并提交。
 
